@@ -1,0 +1,2860 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FOCUS99 — Focus Timer</title>
+
+<style>
+
+/* =====================================================
+   FOCUS99 V3
+===================================================== */
+
+:root {
+    --bg:#07080b;
+    --card:#111318;
+    --card2:#191c23;
+    --text:#ffffff;
+    --muted:#858d9b;
+    --border:#292e38;
+    --accent:#ffffff;
+    --accentText:#07080b;
+}
+
+body.light {
+    --bg:#f4f6f8;
+    --card:#ffffff;
+    --card2:#edf0f4;
+    --text:#101318;
+    --muted:#69727f;
+    --border:#dce1e7;
+    --accent:#101318;
+    --accentText:#ffffff;
+}
+
+body.amoled {
+    --bg:#000000;
+    --card:#030303;
+    --card2:#0b0b0b;
+    --text:#ffffff;
+    --muted:#777777;
+    --border:#1b1b1b;
+}
+
+* {
+    box-sizing:border-box;
+}
+
+body {
+    margin:0;
+    min-height:100vh;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial,Helvetica,sans-serif;
+    transition:.3s;
+}
+
+button,input,select,textarea {
+    font-family:inherit;
+}
+
+button {
+    cursor:pointer;
+}
+
+.app {
+    width:min(1150px,94%);
+    margin:auto;
+    padding:22px 0 60px;
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.brand {
+    line-height:1;
+}
+
+.logo {
+    font-size:27px;
+    font-weight:900;
+    letter-spacing:3px;
+}
+
+.creator {
+    font-size:10px;
+    letter-spacing:1px;
+    color:var(--muted);
+    margin-top:6px;
+    text-transform:lowercase;
+}
+
+.header-buttons {
+    display:flex;
+    gap:7px;
+}
+
+.icon-btn {
+    width:43px;
+    height:43px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--text);
+}
+
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero {
+    text-align:center;
+    padding:65px 0 35px;
+}
+
+.hero h1 {
+    margin:0;
+    font-size:clamp(38px,8vw,74px);
+    letter-spacing:-3px;
+}
+
+.hero p {
+    color:var(--muted);
+    font-size:17px;
+}
+
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+.timer-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:28px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 25px 80px rgba(0,0,0,.25);
+}
+
+.mode {
+    display:inline-block;
+    padding:7px 13px;
+    border-radius:30px;
+    background:var(--card2);
+    color:var(--muted);
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:1px;
+}
+
+.timer {
+    font-family:Consolas,monospace;
+    font-size:clamp(42px,10vw,100px);
+    font-weight:bold;
+    letter-spacing:3px;
+    margin:25px 0 10px;
+}
+
+.timer-label {
+    color:var(--muted);
+    font-size:12px;
+}
+
+.time-inputs {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:8px;
+    margin:28px 0;
+}
+
+.time-inputs input {
+    width:110px;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:var(--card2);
+    color:var(--text);
+    text-align:center;
+    font-size:21px;
+    outline:none;
+}
+
+.time-inputs span {
+    color:var(--muted);
+    font-size:25px;
+    font-weight:bold;
+}
+
+.buttons {
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+
+.btn {
+    border:1px solid var(--border);
+    background:var(--card2);
+    color:var(--text);
+    padding:13px 21px;
+    border-radius:12px;
+    font-weight:bold;
+    margin:4px;
+}
+
+.btn:hover {
+    transform:translateY(-2px);
+}
+
+.primary {
+    background:var(--accent);
+    color:var(--accentText);
+}
+
+.status {
+    min-height:22px;
+    color:var(--muted);
+    margin-top:15px;
+}
+
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+.progress-area {
+    margin-top:28px;
+}
+
+.progress-track {
+    height:12px;
+    background:var(--card2);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress {
+    width:0%;
+    height:100%;
+    background:var(--accent);
+    transition:.25s;
+}
+
+.progress-info {
+    display:flex;
+    justify-content:space-between;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:9px;
+}
+
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.section-title {
+    margin:38px 0 15px;
+    font-size:22px;
+}
+
+
+/* =====================================================
+   CHALLENGES
+===================================================== */
+
+.challenge-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:12px;
+}
+
+.challenge {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    padding:19px;
+    text-align:center;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.challenge:hover {
+    transform:translateY(-4px);
+}
+
+.challenge strong {
+    display:block;
+    font-size:23px;
+}
+
+.challenge small {
+    color:var(--muted);
+}
+
+
+/* =====================================================
+   TASKS
+===================================================== */
+
+.task-box {
+    background:var(--card);
+    border:1px solid var(--border);
+    padding:20px;
+    border-radius:17px;
+}
+
+.task-input {
+    display:flex;
+    gap:8px;
+}
+
+.task-input input {
+    flex:1;
+    padding:13px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:var(--card2);
+    color:var(--text);
+    outline:none;
+}
+
+.task {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.task:last-child {
+    border-bottom:none;
+}
+
+.task.done span {
+    text-decoration:line-through;
+    color:var(--muted);
+}
+
+.task button {
+    margin-left:auto;
+    padding:6px 9px;
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stats {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:12px;
+}
+
+.stat {
+    background:var(--card);
+    border:1px solid var(--border);
+    padding:22px;
+    border-radius:17px;
+}
+
+.stat-value {
+    font-size:29px;
+    font-weight:900;
+}
+
+.stat-name {
+    color:var(--muted);
+    margin-top:5px;
+    font-size:13px;
+}
+
+
+/* =====================================================
+   GOAL
+===================================================== */
+
+.goal-card {
+    margin-top:12px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    padding:22px;
+}
+
+.goal-top {
+    display:flex;
+    justify-content:space-between;
+}
+
+.goal-track {
+    margin-top:15px;
+    height:10px;
+    background:var(--card2);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.goal-progress {
+    height:100%;
+    width:0%;
+    background:var(--accent);
+}
+
+
+/* =====================================================
+   LEVEL
+===================================================== */
+
+.level-card {
+    margin-top:12px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    padding:22px;
+}
+
+.level-top {
+    display:flex;
+    justify-content:space-between;
+}
+
+.xp {
+    color:var(--muted);
+}
+
+.xp-track {
+    margin-top:14px;
+    height:10px;
+    background:var(--card2);
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.xp-bar {
+    width:0%;
+    height:100%;
+    background:var(--accent);
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+.history {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    padding:20px;
+}
+
+.history-row {
+    display:flex;
+    justify-content:space-between;
+    padding:12px 0;
+    border-bottom:1px solid var(--border);
+}
+
+.history-row:last-child {
+    border-bottom:none;
+}
+
+.history-date {
+    color:var(--muted);
+    font-size:13px;
+}
+
+
+/* =====================================================
+   ACHIEVEMENTS
+===================================================== */
+
+.achievement-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:12px;
+}
+
+.achievement {
+    padding:18px;
+    text-align:center;
+    border-radius:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    opacity:.35;
+}
+
+.achievement.unlocked {
+    opacity:1;
+}
+
+.achievement-icon {
+    font-size:30px;
+    margin-bottom:7px;
+}
+
+.achievement small {
+    display:block;
+    color:var(--muted);
+    margin-top:5px;
+}
+
+
+/* =====================================================
+   QUOTE
+===================================================== */
+
+.quote {
+    margin-top:35px;
+    padding:30px;
+    border-radius:20px;
+    background:var(--card);
+    border:1px solid var(--border);
+    text-align:center;
+    font-size:19px;
+    font-weight:bold;
+}
+
+.quote small {
+    display:block;
+    color:var(--muted);
+    margin-top:10px;
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    text-align:center;
+    color:var(--muted);
+    margin-top:55px;
+    font-size:12px;
+}
+
+
+/* =====================================================
+   POPUP
+===================================================== */
+
+.popup {
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.78);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:1000;
+    padding:20px;
+}
+
+.popup.show {
+    display:flex;
+}
+
+.popup-box {
+    width:min(450px,95%);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:25px;
+    padding:35px;
+    text-align:center;
+}
+
+.trophy {
+    font-size:70px;
+}
+
+
+/* =====================================================
+   FOCUS MODE
+===================================================== */
+
+.focus-mode {
+    overflow:hidden;
+}
+
+.focus-mode .hero,
+.focus-mode .section-title,
+.focus-mode .challenge-grid,
+.focus-mode .stats,
+.focus-mode .goal-card,
+.focus-mode .level-card,
+.focus-mode .history,
+.focus-mode .achievement-grid,
+.focus-mode .quote,
+.focus-mode footer {
+    display:none;
+}
+
+.focus-mode .app {
+    width:100%;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.focus-mode .timer-card {
+    border:none;
+    box-shadow:none;
+    background:transparent;
+}
+
+.focus-mode .timer {
+    font-size:clamp(60px,15vw,160px);
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px) {
+
+    .time-inputs {
+        gap:4px;
+    }
+
+    .time-inputs input {
+        width:80px;
+        font-size:18px;
+    }
+
+    .time-inputs span {
+        font-size:19px;
+    }
+
+    .timer-card {
+        padding:22px 10px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<header>
+
+    <div class="brand">
+
+        <div class="logo">
+            FOCUS99
+        </div>
+
+        <div class="creator">
+            made by arnav shelke
+        </div>
+
+    </div>
+
+
+    <div class="header-buttons">
+
+        <button
+            class="icon-btn"
+            onclick="changeTheme()">
+            ◐
+        </button>
+
+        <button
+            class="icon-btn"
+            onclick="toggleFocusMode()">
+            ⛶
+        </button>
+
+    </div>
+
+</header>
+
+
+<section class="hero">
+
+    <h1>
+        HOW LONG CAN YOU FOCUS?
+    </h1>
+
+    <p>
+        Set your challenge. Start your timer. Stay focused.
+    </p>
+
+</section>
+
+
+<!-- TIMER -->
+
+<section class="timer-card">
+
+    <div
+        class="mode"
+        id="mode">
+        READY
+    </div>
+
+
+    <div
+        class="timer"
+        id="timer">
+        000:00:00:000
+    </div>
+
+
+    <div class="timer-label">
+        HOURS : MINUTES : SECONDS : MILLISECONDS
+    </div>
+
+
+    <div class="time-inputs">
+
+        <input
+            id="hours"
+            type="number"
+            min="0"
+            max="999"
+            value="0"
+            placeholder="HHH">
+
+        <span>:</span>
+
+        <input
+            id="minutes"
+            type="number"
+            min="0"
+            max="59"
+            value="0"
+            placeholder="MM">
+
+        <span>:</span>
+
+        <input
+            id="seconds"
+            type="number"
+            min="0"
+            max="59"
+            value="0"
+            placeholder="SS">
+
+    </div>
+
+
+    <div class="buttons">
+
+        <button
+            class="btn primary"
+            onclick="startTimer()">
+            ▶ START
+        </button>
+
+        <button
+            class="btn"
+            onclick="pauseTimer()">
+            ⏸ PAUSE
+        </button>
+
+        <button
+            class="btn"
+            onclick="resetTimer()">
+            ↻ RESET
+        </button>
+
+    </div>
+
+
+    <div
+        class="status"
+        id="status">
+        Ready for your challenge.
+    </div>
+
+
+    <div class="progress-area">
+
+        <div class="progress-track">
+
+            <div
+                class="progress"
+                id="progress">
+            </div>
+
+        </div>
+
+
+        <div class="progress-info">
+
+            <span id="progressText">
+                0% completed
+            </span>
+
+            <span id="remainingText">
+                0 remaining
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- QUICK CHALLENGES -->
+
+<h2 class="section-title">
+    🎯 Quick Challenges
+</h2>
+
+
+<div class="challenge-grid">
+
+    <div
+        class="challenge"
+        onclick="setChallenge(0,25,0)">
+        <strong>25M</strong>
+        <small>Pomodoro</small>
+    </div>
+
+    <div
+        class="challenge"
+        onclick="setChallenge(1,0,0)">
+        <strong>1H</strong>
+        <small>Starter</small>
+    </div>
+
+    <div
+        class="challenge"
+        onclick="setChallenge(3,0,0)">
+        <strong>3H</strong>
+        <small>Focused</small>
+    </div>
+
+    <div
+        class="challenge"
+        onclick="setChallenge(6,0,0)">
+        <strong>6H</strong>
+        <small>Hard</small>
+    </div>
+
+    <div
+        class="challenge"
+        onclick="setChallenge(12,0,0)">
+        <strong>12H</strong>
+        <small>Extreme</small>
+    </div>
+
+    <div
+        class="challenge"
+        onclick="setChallenge(24,0,0)">
+        <strong>24H</strong>
+        <small>Legendary</small>
+    </div>
+
+    <div
+        class="challenge"
+        onclick="setChallenge(999,0,0)">
+        <strong>999H</strong>
+        <small>Maximum</small>
+    </div>
+
+</div>
+
+
+<!-- TASKS -->
+
+<h2 class="section-title">
+    📝 Today's Tasks
+</h2>
+
+
+<div class="task-box">
+
+    <div class="task-input">
+
+        <input
+            id="taskInput"
+            placeholder="What do you want to focus on?">
+
+        <button
+            class="btn primary"
+            onclick="addTask()">
+            ADD
+        </button>
+
+    </div>
+
+
+    <div id="taskList"></div>
+
+</div>
+
+
+<!-- STATISTICS -->
+
+<h2 class="section-title">
+    📊 Statistics
+</h2>
+
+
+<div class="stats">
+
+    <div class="stat">
+
+        <div
+            class="stat-value"
+            id="totalTime">
+            0h
+        </div>
+
+        <div class="stat-name">
+            Total Focus
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div
+            class="stat-value"
+            id="sessions">
+            0
+        </div>
+
+        <div class="stat-name">
+            Sessions
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div
+            class="stat-value"
+            id="longest">
+            0h
+        </div>
+
+        <div class="stat-name">
+            Personal Record
+        </div>
+
+    </div>
+
+
+    <div class="stat">
+
+        <div
+            class="stat-value">
+            🔥 <span id="streak">0</span>
+        </div>
+
+        <div class="stat-name">
+            Day Streak
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- WEEKLY GOAL -->
+
+<h2 class="section-title">
+    🎯 Weekly Goal
+</h2>
+
+
+<div class="goal-card">
+
+    <div class="goal-top">
+
+        <strong>
+            <span id="goalHours">
+                0
+            </span>
+            /
+            <span id="goalTarget">
+                15
+            </span>
+            hours
+        </strong>
+
+        <span>
+            <button
+                class="btn"
+                onclick="changeGoal()">
+                Change Goal
+            </button>
+        </span>
+
+    </div>
+
+
+    <div class="goal-track">
+
+        <div
+            class="goal-progress"
+            id="goalProgress">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- LEVEL -->
+
+<div class="level-card">
+
+    <div class="level-top">
+
+        <strong>
+            ⚡ Level
+            <span id="level">
+                1
+            </span>
+        </strong>
+
+        <span class="xp">
+            <span id="xp">
+                0
+            </span>
+            XP
+        </span>
+
+    </div>
+
+
+    <div class="xp-track">
+
+        <div
+            class="xp-bar"
+            id="xpBar">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- HISTORY -->
+
+<h2 class="section-title">
+    📈 Session History
+</h2>
+
+
+<div
+    class="history"
+    id="history">
+
+    No completed sessions yet.
+
+</div>
+
+
+<!-- ACHIEVEMENTS -->
+
+<h2 class="section-title">
+    🏆 Achievements
+</h2>
+
+
+<div class="achievement-grid">
+
+
+    <div
+        class="achievement"
+        id="a1">
+
+        <div class="achievement-icon">
+            🌱
+        </div>
+
+        First Focus
+
+        <small>
+            Complete 1 session
+        </small>
+
+    </div>
+
+
+    <div
+        class="achievement"
+        id="a2">
+
+        <div class="achievement-icon">
+            ⚡
+        </div>
+
+        3 Hour Club
+
+        <small>
+            Focus for 3 hours
+        </small>
+
+    </div>
+
+
+    <div
+        class="achievement"
+        id="a3">
+
+        <div class="achievement-icon">
+            🔥
+        </div>
+
+        On Fire
+
+        <small>
+            3 day streak
+        </small>
+
+    </div>
+
+
+    <div
+        class="achievement"
+        id="a4">
+
+        <div class="achievement-icon">
+            💎
+        </div>
+
+        Diamond Mind
+
+        <small>
+            12 hour session
+        </small>
+
+    </div>
+
+
+    <div
+        class="achievement"
+        id="a5">
+
+        <div class="achievement-icon">
+            👑
+        </div>
+
+        Focus Master
+
+        <small>
+            24 hour session
+        </small>
+
+    </div>
+
+
+    <div
+        class="achievement"
+        id="a6">
+
+        <div class="achievement-icon">
+            🚀
+        </div>
+
+        Elite Focus
+
+        <small>
+            100 total hours
+        </small>
+
+    </div>
+
+</div>
+
+
+<!-- QUOTE -->
+
+<div class="quote">
+
+    <span id="quote">
+        Focus on the next minute, not the next hour.
+    </span>
+
+    <small>
+        FOCUS99
+    </small>
+
+</div>
+
+
+<footer>
+
+    FOCUS99 • made by arnav shelke
+
+</footer>
+
+
+</div>
+
+
+<!-- COMPLETION POPUP -->
+
+<div
+    class="popup"
+    id="popup">
+
+    <div class="popup-box">
+
+        <div class="trophy">
+            🏆
+        </div>
+
+        <h2>
+            CHALLENGE COMPLETE
+        </h2>
+
+        <p id="result"></p>
+
+        <button
+            class="btn primary"
+            onclick="shareResult()">
+            📤 SHARE RESULT
+        </button>
+
+        <button
+            class="btn"
+            onclick="closePopup()">
+            CONTINUE
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   TIMER
+===================================================== */
+
+let remaining = 0;
+
+let totalDuration = 0;
+
+let running = false;
+
+let endTime = null;
+
+let animationFrame;
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+let stats =
+JSON.parse(
+    localStorage.getItem(
+        "focus99Stats"
+    )
+) || {
+
+    totalTime:0,
+    sessions:0,
+    longest:0,
+    streak:0,
+    lastDate:null,
+    xp:0
+
+};
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+let history =
+JSON.parse(
+    localStorage.getItem(
+        "focus99History"
+    )
+) || [];
+
+
+/* =====================================================
+   TASKS
+===================================================== */
+
+let tasks =
+JSON.parse(
+    localStorage.getItem(
+        "focus99Tasks"
+    )
+) || [];
+
+
+/* =====================================================
+   GOAL
+===================================================== */
+
+let goal =
+Number(
+    localStorage.getItem(
+        "focus99Goal"
+    )
+) || 15;
+
+
+/* =====================================================
+   TIME FORMAT
+===================================================== */
+
+function formatTime(ms) {
+
+    ms =
+        Math.max(
+            0,
+            Math.floor(ms)
+        );
+
+
+    let h =
+        Math.floor(
+            ms / 3600000
+        );
+
+
+    let m =
+        Math.floor(
+            (ms % 3600000)
+            / 60000
+        );
+
+
+    let s =
+        Math.floor(
+            (ms % 60000)
+            / 1000
+        );
+
+
+    let milli =
+        ms % 1000;
+
+
+    return (
+
+        String(h)
+            .padStart(3,"0")
+
+        + ":" +
+
+        String(m)
+            .padStart(2,"0")
+
+        + ":" +
+
+        String(s)
+            .padStart(2,"0")
+
+        + ":" +
+
+        String(milli)
+            .padStart(3,"0")
+
+    );
+
+}
+
+
+/* =====================================================
+   READABLE
+===================================================== */
+
+function readable(ms) {
+
+    let seconds =
+        Math.ceil(
+            ms / 1000
+        );
+
+
+    let h =
+        Math.floor(
+            seconds / 3600
+        );
+
+
+    let m =
+        Math.floor(
+            (seconds % 3600)
+            / 60
+        );
+
+
+    let s =
+        seconds % 60;
+
+
+    let result = "";
+
+
+    if (h)
+        result += h + "h ";
+
+
+    if (m || h)
+        result += m + "m ";
+
+
+    result += s + "s";
+
+
+    return result;
+
+}
+
+
+/* =====================================================
+   DISPLAY
+===================================================== */
+
+function updateDisplay() {
+
+    document.getElementById(
+        "timer"
+    ).textContent =
+        formatTime(
+            remaining
+        );
+
+
+    updateProgress();
+
+}
+
+
+/* =====================================================
+   PROGRESS
+===================================================== */
+
+function updateProgress() {
+
+    if (!totalDuration) {
+
+        document.getElementById(
+            "progress"
+        ).style.width =
+            "0%";
+
+        document.getElementById(
+            "progressText"
+        ).textContent =
+            "0% completed";
+
+        document.getElementById(
+            "remainingText"
+        ).textContent =
+            "0 remaining";
+
+        return;
+
+    }
+
+
+    let percentage =
+        (
+            totalDuration
+            - remaining
+        )
+        /
+        totalDuration
+        *
+        100;
+
+
+    percentage =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                percentage
+            )
+        );
+
+
+    document.getElementById(
+        "progress"
+    ).style.width =
+        percentage + "%";
+
+
+    document.getElementById(
+        "progressText"
+    ).textContent =
+        percentage.toFixed(1)
+        + "% completed";
+
+
+    document.getElementById(
+        "remainingText"
+    ).textContent =
+        readable(
+            remaining
+        )
+        + " remaining";
+
+}
+
+
+/* =====================================================
+   INPUT TIME
+===================================================== */
+
+function getInputTime() {
+
+    let h =
+        Number(
+            document.getElementById(
+                "hours"
+            ).value
+        );
+
+
+    let m =
+        Number(
+            document.getElementById(
+                "minutes"
+            ).value
+        );
+
+
+    let s =
+        Number(
+            document.getElementById(
+                "seconds"
+            ).value
+        );
+
+
+    if (!Number.isFinite(h))
+        h = 0;
+
+
+    if (!Number.isFinite(m))
+        m = 0;
+
+
+    if (!Number.isFinite(s))
+        s = 0;
+
+
+    h =
+        Math.max(
+            0,
+            Math.min(
+                999,
+                Math.floor(h)
+            )
+        );
+
+
+    m =
+        Math.max(
+            0,
+            Math.min(
+                59,
+                Math.floor(m)
+            )
+        );
+
+
+    s =
+        Math.max(
+            0,
+            Math.min(
+                59,
+                Math.floor(s)
+            )
+        );
+
+
+    document.getElementById(
+        "hours"
+    ).value = h;
+
+
+    document.getElementById(
+        "minutes"
+    ).value = m;
+
+
+    document.getElementById(
+        "seconds"
+    ).value = s;
+
+
+    return (
+        h * 3600000
+        +
+        m * 60000
+        +
+        s * 1000
+    );
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+function startTimer() {
+
+    if (running)
+        return;
+
+
+    if (remaining <= 0) {
+
+        remaining =
+            getInputTime();
+
+        totalDuration =
+            remaining;
+
+    }
+
+
+    if (remaining <= 0) {
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "Choose a time first.";
+
+        return;
+
+    }
+
+
+    /*
+       IMPORTANT:
+       Save the actual end timestamp.
+       This allows the timer to recover
+       after Chrome closes or the laptop
+       shuts down.
+    */
+
+    endTime =
+        Date.now()
+        +
+        remaining;
+
+
+    localStorage.setItem(
+        "focus99Timer",
+        JSON.stringify({
+
+            running:true,
+
+            endTime:endTime,
+
+            remaining:remaining,
+
+            totalDuration:totalDuration
+
+        })
+    );
+
+
+    running = true;
+
+
+    document.getElementById(
+        "mode"
+    ).textContent =
+        "FOCUSING";
+
+
+    document.getElementById(
+        "status"
+    ).textContent =
+        "🔥 Stay focused...";
+
+
+    animationFrame =
+        requestAnimationFrame(
+            tick
+        );
+
+}
+
+
+/* =====================================================
+   TIMER LOOP
+===================================================== */
+
+function tick() {
+
+    if (!running)
+        return;
+
+
+    remaining =
+        endTime
+        -
+        Date.now();
+
+
+    if (remaining <= 0) {
+
+        remaining = 0;
+
+        running = false;
+
+        localStorage.removeItem(
+            "focus99Timer"
+        );
+
+        completeSession();
+
+        updateDisplay();
+
+        return;
+
+    }
+
+
+    updateDisplay();
+
+
+    animationFrame =
+        requestAnimationFrame(
+            tick
+        );
+
+}
+
+
+/* =====================================================
+   PAUSE
+===================================================== */
+
+function pauseTimer() {
+
+    if (!running)
+        return;
+
+
+    remaining =
+        Math.max(
+            0,
+            endTime
+            -
+            Date.now()
+        );
+
+
+    running = false;
+
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+
+    localStorage.setItem(
+        "focus99Timer",
+        JSON.stringify({
+
+            running:false,
+
+            remaining:remaining,
+
+            totalDuration:totalDuration
+
+        })
+    );
+
+
+    document.getElementById(
+        "mode"
+    ).textContent =
+        "PAUSED";
+
+
+    document.getElementById(
+        "status"
+    ).textContent =
+        "Timer paused.";
+
+
+    updateDisplay();
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetTimer() {
+
+    running = false;
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+
+    remaining = 0;
+
+    totalDuration = 0;
+
+    endTime = null;
+
+
+    localStorage.removeItem(
+        "focus99Timer"
+    );
+
+
+    document.getElementById(
+        "hours"
+    ).value = 0;
+
+
+    document.getElementById(
+        "minutes"
+    ).value = 0;
+
+
+    document.getElementById(
+        "seconds"
+    ).value = 0;
+
+
+    document.getElementById(
+        "mode"
+    ).textContent =
+        "READY";
+
+
+    document.getElementById(
+        "status"
+    ).textContent =
+        "Ready for your challenge.";
+
+
+    updateDisplay();
+
+}
+
+
+/* =====================================================
+   QUICK CHALLENGE
+===================================================== */
+
+function setChallenge(h,m,s) {
+
+    if (running) {
+
+        alert(
+            "Pause the timer first."
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "hours"
+    ).value = h;
+
+
+    document.getElementById(
+        "minutes"
+    ).value = m;
+
+
+    document.getElementById(
+        "seconds"
+    ).value = s;
+
+
+    remaining =
+        h * 3600000
+        +
+        m * 60000
+        +
+        s * 1000;
+
+
+    totalDuration =
+        remaining;
+
+
+    document.getElementById(
+        "mode"
+    ).textContent =
+        "CHALLENGE READY";
+
+
+    updateDisplay();
+
+}
+
+
+/* =====================================================
+   COMPLETE
+===================================================== */
+
+function completeSession() {
+
+    let hours =
+        totalDuration
+        /
+        3600000;
+
+
+    stats.totalTime +=
+        hours;
+
+
+    stats.sessions++;
+
+
+    if (
+        hours >
+        stats.longest
+    ) {
+
+        stats.longest =
+            hours;
+
+    }
+
+
+    stats.xp +=
+        Math.max(
+            10,
+            Math.round(
+                hours * 100
+            )
+        );
+
+
+    updateStreak();
+
+
+    history.unshift({
+
+        date:
+            new Date()
+            .toLocaleString(),
+
+        duration:
+            readable(
+                totalDuration
+            )
+
+    });
+
+
+    history =
+        history.slice(
+            0,
+            20
+        );
+
+
+    saveAll();
+
+    updateStats();
+
+    renderHistory();
+
+    unlockAchievements();
+
+
+    document.getElementById(
+        "result"
+    ).textContent =
+
+        readable(
+            totalDuration
+        )
+        +
+        " completed • XP earned!";
+
+
+    document.getElementById(
+        "popup"
+    ).classList.add(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   STREAK
+===================================================== */
+
+function updateStreak() {
+
+    let today =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+
+    if (
+        stats.lastDate
+        === today
+    )
+        return;
+
+
+    if (!stats.lastDate) {
+
+        stats.streak = 1;
+
+    }
+
+    else {
+
+        let old =
+            new Date(
+                stats.lastDate
+            );
+
+
+        let now =
+            new Date(
+                today
+            );
+
+
+        let days =
+            Math.round(
+                (
+                    now - old
+                )
+                /
+                86400000
+            );
+
+
+        if (
+            days === 1
+        )
+            stats.streak++;
+
+        else
+            stats.streak = 1;
+
+    }
+
+
+    stats.lastDate =
+        today;
+
+}
+
+
+/* =====================================================
+   SAVE
+===================================================== */
+
+function saveAll() {
+
+    localStorage.setItem(
+        "focus99Stats",
+        JSON.stringify(stats)
+    );
+
+
+    localStorage.setItem(
+        "focus99History",
+        JSON.stringify(history)
+    );
+
+
+    localStorage.setItem(
+        "focus99Tasks",
+        JSON.stringify(tasks)
+    );
+
+
+    localStorage.setItem(
+        "focus99Goal",
+        goal
+    );
+
+}
+
+
+/* =====================================================
+   STATS
+===================================================== */
+
+function updateStats() {
+
+    document.getElementById(
+        "totalTime"
+    ).textContent =
+        stats.totalTime.toFixed(1)
+        + "h";
+
+
+    document.getElementById(
+        "sessions"
+    ).textContent =
+        stats.sessions;
+
+
+    document.getElementById(
+        "longest"
+    ).textContent =
+        stats.longest.toFixed(1)
+        + "h";
+
+
+    document.getElementById(
+        "streak"
+    ).textContent =
+        stats.streak;
+
+
+    updateLevel();
+
+    updateGoal();
+
+}
+
+
+/* =====================================================
+   LEVEL
+===================================================== */
+
+function updateLevel() {
+
+    let level =
+        Math.floor(
+            stats.xp / 500
+        )
+        + 1;
+
+
+    let current =
+        stats.xp % 500;
+
+
+    document.getElementById(
+        "level"
+    ).textContent =
+        level;
+
+
+    document.getElementById(
+        "xp"
+    ).textContent =
+        stats.xp;
+
+
+    document.getElementById(
+        "xpBar"
+    ).style.width =
+        (
+            current / 500 * 100
+        )
+        + "%";
+
+}
+
+
+/* =====================================================
+   WEEKLY GOAL
+===================================================== */
+
+function updateGoal() {
+
+    document.getElementById(
+        "goalHours"
+    ).textContent =
+        stats.totalTime.toFixed(1);
+
+
+    document.getElementById(
+        "goalTarget"
+    ).textContent =
+        goal;
+
+
+    let percentage =
+        stats.totalTime
+        /
+        goal
+        *
+        100;
+
+
+    document.getElementById(
+        "goalProgress"
+    ).style.width =
+        Math.min(
+            100,
+            percentage
+        )
+        + "%";
+
+}
+
+
+function changeGoal() {
+
+    let newGoal =
+        prompt(
+            "Set your goal in hours:",
+            goal
+        );
+
+
+    if (
+        newGoal !== null
+        &&
+        Number(newGoal) > 0
+    ) {
+
+        goal =
+            Number(newGoal);
+
+        saveAll();
+
+        updateGoal();
+
+    }
+
+}
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
+
+function renderHistory() {
+
+    let box =
+        document.getElementById(
+            "history"
+        );
+
+
+    if (
+        history.length === 0
+    ) {
+
+        box.textContent =
+            "No completed sessions yet.";
+
+        return;
+
+    }
+
+
+    box.innerHTML =
+        history.map(
+            item =>
+
+            `
+            <div class="history-row">
+
+                <strong>
+                    ${item.duration}
+                </strong>
+
+                <span class="history-date">
+                    ${item.date}
+                </span>
+
+            </div>
+            `
+
+        ).join("");
+
+}
+
+
+/* =====================================================
+   TASKS
+===================================================== */
+
+function addTask() {
+
+    let input =
+        document.getElementById(
+            "taskInput"
+        );
+
+
+    let text =
+        input.value.trim();
+
+
+    if (!text)
+        return;
+
+
+    tasks.push({
+
+        text:text,
+
+        done:false
+
+    });
+
+
+    input.value = "";
+
+    saveAll();
+
+    renderTasks();
+
+}
+
+
+function renderTasks() {
+
+    let list =
+        document.getElementById(
+            "taskList"
+        );
+
+
+    list.innerHTML =
+        tasks.map(
+            (task,index) =>
+
+            `
+            <div
+                class="task ${task.done ? "done" : ""}">
+
+                <input
+                    type="checkbox"
+                    ${task.done ? "checked" : ""}
+                    onchange="toggleTask(${index})">
+
+                <span>
+                    ${escapeHTML(task.text)}
+                </span>
+
+                <button
+                    class="btn"
+                    onclick="deleteTask(${index})">
+                    ✕
+                </button>
+
+            </div>
+            `
+
+        ).join("");
+
+}
+
+
+function toggleTask(index) {
+
+    tasks[index].done =
+        !tasks[index].done;
+
+    saveAll();
+
+    renderTasks();
+
+}
+
+
+function deleteTask(index) {
+
+    tasks.splice(
+        index,
+        1
+    );
+
+    saveAll();
+
+    renderTasks();
+
+}
+
+
+function escapeHTML(text) {
+
+    let div =
+        document.createElement(
+            "div"
+        );
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   ACHIEVEMENTS
+===================================================== */
+
+function unlockAchievements() {
+
+    if (
+        stats.sessions >= 1
+    )
+        unlock("a1");
+
+
+    if (
+        stats.totalTime >= 3
+    )
+        unlock("a2");
+
+
+    if (
+        stats.streak >= 3
+    )
+        unlock("a3");
+
+
+    if (
+        stats.longest >= 12
+    )
+        unlock("a4");
+
+
+    if (
+        stats.longest >= 24
+    )
+        unlock("a5");
+
+
+    if (
+        stats.totalTime >= 100
+    )
+        unlock("a6");
+
+}
+
+
+function unlock(id) {
+
+    document.getElementById(
+        id
+    ).classList.add(
+        "unlocked"
+    );
+
+}
+
+
+/* =====================================================
+   THEME
+===================================================== */
+
+function changeTheme() {
+
+    if (
+        document.body.classList
+            .contains("light")
+    ) {
+
+        document.body.classList
+            .remove("light");
+
+        document.body.classList
+            .add("amoled");
+
+        localStorage.setItem(
+            "focus99Theme",
+            "amoled"
+        );
+
+    }
+
+    else if (
+        document.body.classList
+            .contains("amoled")
+    ) {
+
+        document.body.classList
+            .remove("amoled");
+
+        localStorage.setItem(
+            "focus99Theme",
+            "dark"
+        );
+
+    }
+
+    else {
+
+        document.body.classList
+            .add("light");
+
+        localStorage.setItem(
+            "focus99Theme",
+            "light"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   FOCUS MODE
+===================================================== */
+
+function toggleFocusMode() {
+
+    document.body.classList
+        .toggle(
+            "focus-mode"
+        );
+
+}
+
+
+/* =====================================================
+   POPUP
+===================================================== */
+
+function closePopup() {
+
+    document.getElementById(
+        "popup"
+    ).classList.remove(
+        "show"
+    );
+
+}
+
+
+/* =====================================================
+   SHARE
+===================================================== */
+
+function shareResult() {
+
+    let text =
+        "🏆 I completed a focus challenge on FOCUS99!\n\n"
+        +
+        readable(
+            totalDuration
+        )
+        +
+        " of focused time.\n\n"
+        +
+        "FOCUS99 — made by arnav shelke";
+
+
+    if (
+        navigator.share
+    ) {
+
+        navigator.share({
+
+            title:
+                "FOCUS99",
+
+            text:
+                text
+
+        });
+
+    }
+
+    else {
+
+        navigator.clipboard
+            .writeText(
+                text
+            );
+
+        alert(
+            "Result copied!"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   LOAD SAVED TIMER
+===================================================== */
+
+function loadSavedTimer() {
+
+    let saved =
+        JSON.parse(
+            localStorage.getItem(
+                "focus99Timer"
+            )
+        );
+
+
+    if (!saved)
+        return;
+
+
+    remaining =
+        saved.remaining || 0;
+
+
+    totalDuration =
+        saved.totalDuration || 0;
+
+
+    if (
+        saved.running
+        &&
+        saved.endTime
+    ) {
+
+        endTime =
+            saved.endTime;
+
+
+        remaining =
+            endTime
+            -
+            Date.now();
+
+
+        if (
+            remaining > 0
+        ) {
+
+            running = true;
+
+
+            document.getElementById(
+                "mode"
+            ).textContent =
+                "RESUMED";
+
+
+            document.getElementById(
+                "status"
+            ).textContent =
+                "Timer restored.";
+
+
+            animationFrame =
+                requestAnimationFrame(
+                    tick
+                );
+
+        }
+
+        else {
+
+            remaining = 0;
+
+            localStorage.removeItem(
+                "focus99Timer"
+            );
+
+        }
+
+    }
+
+    else if (
+        remaining > 0
+    ) {
+
+        document.getElementById(
+            "mode"
+        ).textContent =
+            "PAUSED";
+
+    }
+
+
+    updateDisplay();
+
+}
+
+
+/* =====================================================
+   INPUT LISTENERS
+===================================================== */
+
+[
+    "hours",
+    "minutes",
+    "seconds"
+]
+.forEach(
+    id => {
+
+        document.getElementById(
+            id
+        )
+        .addEventListener(
+            "input",
+            () => {
+
+                if (running)
+                    return;
+
+
+                remaining =
+                    getInputTime();
+
+
+                totalDuration =
+                    remaining;
+
+
+                updateDisplay();
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.code ===
+            "Space"
+        ) {
+
+            event.preventDefault();
+
+            if (running)
+                pauseTimer();
+
+            else
+                startTimer();
+
+        }
+
+
+        if (
+            event.key.toLowerCase()
+            === "r"
+        ) {
+
+            resetTimer();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   QUOTES
+===================================================== */
+
+const quotes = [
+
+    "Focus on the next minute, not the next hour.",
+
+    "Your attention is your superpower.",
+
+    "One task. One moment.",
+
+    "Stay with it.",
+
+    "Make this hour count.",
+
+    "Discipline beats motivation.",
+
+    "You started. Keep going.",
+
+    "Protect your focus.",
+
+    "Less scrolling. More creating."
+
+];
+
+
+let quoteIndex = 0;
+
+
+setInterval(
+    () => {
+
+        quoteIndex =
+            (
+                quoteIndex + 1
+            )
+            %
+            quotes.length;
+
+
+        document.getElementById(
+            "quote"
+        ).textContent =
+            quotes[
+                quoteIndex
+            ];
+
+    },
+    6000
+);
+
+
+/* =====================================================
+   STARTUP
+===================================================== */
+
+updateStats();
+
+renderHistory();
+
+renderTasks();
+
+unlockAchievements();
+
+loadSavedTimer();
+
+</script>
+
+</body>
+</html>
+```
